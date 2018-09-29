@@ -5,10 +5,10 @@ POLYGON_COUNT = "150000"
 RC_IMG_PATH = "img/rc/"
 
 IMG_FILE_NAMES = {
-    folder_icon: "select_folder.png",
-    rc_taskbar: "rc_taskbar.png",
-    folder_path: "folder_select.png",
-    simplify_mesh:"",
+    "folder_icon": "select_folder.png",
+    "rc_taskbar": "rc_taskbar.png",
+    "folder_path": "folder_select.png",
+    "simplify_mesh":"",
 }
 
 def move(to_x, to_y, duration):
