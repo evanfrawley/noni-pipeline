@@ -26,7 +26,8 @@ def reset():
 
 def open_reality_capture():
     reset()
-    path = "" + RC_IMG_PATH + IMG_FILE_NAMES["rc_taskbar.png"]
+    path = "" + RC_IMG_PATH + IMG_FILE_NAMES['rc_taskbar']
+    print(IMG_FILE_NAMES['rc_taskbar'])
     print(path)
     rc_x, rc_y = pyautogui.locateCenterOnScreen(path)
     pyautogui.click(rc_x, rc_y)
@@ -34,12 +35,14 @@ def open_reality_capture():
 
 def select_img_folder():
     reset()
-    path = "" + RC_IMG_PATH + IMG_FILE_NAMES["folder_icon.png"]
+    path = "" + RC_IMG_PATH + IMG_FILE_NAMES['folder_icon']
+    print(IMG_FILE_NAMES['folder_icon'])
     print(path)
     x, y = pyautogui.locateCenterOnScreen(path)
     move(x, y)
     pyautogui.click()
-    path = "" + RC_IMG_PATH + IMG_FILE_NAMES["folder_path.png"]
+    path = "" + RC_IMG_PATH + IMG_FILE_NAMES['folder_path']
+    print(IMG_FILE_NAMES['folder_path'])
     print(path)
     x, y = pyautogui.locateCenterOnScreen(path)
     move(x, y)
@@ -50,7 +53,7 @@ def select_img_folder():
 
 def simplify_mesh():
     reset()
-    rc_x, rc_y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES["rc_taskbar.png"])
+    rc_x, rc_y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES['folder_path'])
     pyautogui.click(rc_x, rc_y)
 
 
