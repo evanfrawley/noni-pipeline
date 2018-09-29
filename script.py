@@ -26,16 +26,19 @@ def reset():
 
 def open_reality_capture():
     reset()
-    rc_x, rc_y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES["rc_taskbar.png"])
+    path = RC_IMG_PATH + IMG_FILE_NAMES["rc_taskbar.png"])
+    rc_x, rc_y = pyautogui.locateCenterOnScreen(path)
     pyautogui.click(rc_x, rc_y)
 
 
 def select_img_folder():
     reset()
-    x, y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES["folder_icon.png"])
+    path = RC_IMG_PATH + IMG_FILE_NAMES["folder_icon.png"]
+    x, y = pyautogui.locateCenterOnScreen(path)
     move(x, y)
     pyautogui.click()
-    x, y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES["folder_path.png"])
+    path = "" + RC_IMG_PATH + IMG_FILE_NAMES["folder_path.png"]
+    x, y = pyautogui.locateCenterOnScreen(path)
     move(x, y)
     pyautogui.click(clicks=2)
     write("this is a test123")
