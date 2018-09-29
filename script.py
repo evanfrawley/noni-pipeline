@@ -26,16 +26,16 @@ def reset():
 
 def open_reality_capture():
     reset()
-    rc_x, rc_y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES["rc_taskbar"])
+    rc_x, rc_y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES["rc_taskbar.png"])
     pyautogui.click(rc_x, rc_y)
 
 
 def select_img_folder():
     reset()
-    x, y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES["folder_icon"])
+    x, y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES["folder_icon.png"])
     move(x, y)
     pyautogui.click()
-    x, y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES["folder_path"])
+    x, y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES["folder_path.png"])
     move(x, y)
     pyautogui.click(clicks=2)
     write("this is a test123")
@@ -44,7 +44,7 @@ def select_img_folder():
 
 def simplify_mesh():
     reset()
-    rc_x, rc_y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES["rc_taskbar"])
+    rc_x, rc_y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES["rc_taskbar.png"])
     pyautogui.click(rc_x, rc_y)
 
 
