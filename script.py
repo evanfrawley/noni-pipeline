@@ -40,8 +40,8 @@ def select_img_folder():
     move(x, y)
     pyautogui.click()
     path = "" + RC_IMG_PATH + IMG_FILE_NAMES["folder_path.png"]
-        print(path)
-x, y = pyautogui.locateCenterOnScreen(path)
+    print(path)
+    x, y = pyautogui.locateCenterOnScreen(path)
     move(x, y)
     pyautogui.click(clicks=2)
     write("this is a test123")
