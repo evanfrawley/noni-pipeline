@@ -4,10 +4,6 @@ import time
 POLYGON_COUNT = "150000"
 RC_IMG_PATH = "img/rc/"
 
-ACTION_MAP = {
-    "OPEN_CHROME": openChrome,
-}
-
 IMG_FILE_NAMES = {
     folder_icon: "select_folder.png",
     rc_taskbar: "rc_taskbar.png",
