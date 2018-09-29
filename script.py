@@ -26,7 +26,7 @@ def reset():
 
 def open_reality_capture():
     reset()
-    path = RC_IMG_PATH + IMG_FILE_NAMES["rc_taskbar.png"])
+    path = RC_IMG_PATH + IMG_FILE_NAMES["rc_taskbar.png"]
     rc_x, rc_y = pyautogui.locateCenterOnScreen(path)
     pyautogui.click(rc_x, rc_y)
 
