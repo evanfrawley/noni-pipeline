@@ -37,8 +37,8 @@ POINTS = {
         "y": 104,
     },
     "photos_file_picker": {
-        "x":930,
-        "y":650,
+        "x": 1080,
+        "y": 653,
     },
 }
 
@@ -100,6 +100,10 @@ def click():
     pyautogui.click()
 
 
+def double_click():
+    pyautogui.click(clicks=2)
+
+
 def get_x_y(key):
     return (POINTS[key]["x"], POINTS[key]["y"])
 
@@ -113,7 +117,7 @@ def move_and_click(key):
 def move_and_double_click(key):
     x, y = get_x_y(key)
     move(x, y, 1)
-    click()
+    double_click()
 
 
 def check_working():
