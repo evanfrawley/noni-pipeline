@@ -40,6 +40,10 @@ POINTS = {
         "x": 1080,
         "y": 653,
     },
+    "photos_file_picker_ok": {
+        "x": 980,
+        "y": 688,
+    },
 }
 
 def move(to_x, to_y, duration):
@@ -136,6 +140,7 @@ def run():
     move_and_click("photos_buttons")
     move_and_double_click("photos_file_picker")
     paste_text("AlfredoPasta")
+    move_and_click("photos_file_picker_ok")
     move_and_click("align_images")
     check_working()
     move_and_click("calculate_model")
