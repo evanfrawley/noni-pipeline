@@ -127,6 +127,7 @@ def check_working():
 
 def paste_text(text):
     pyautogui.typewrite(text, interval=0.21)
+    pyautogui.enter()
     time.sleep(1)
 
 
