@@ -103,16 +103,25 @@ def get_x_y(key):
 def move_and_click(key):
     x, y = get_x_y(key)
     move(x, y, 1)
-    # click()
+    click()
+
+
+def check_working():
+    p_x, p_y = pyautogui.locateCenterOnScreen('controls.png')
+    print(p_x, p_y)
 
 
 def run():
     move_and_click("reality_capture_taskbar")
     move_and_click("photos_buttons")
     move_and_click("align_images")
+    check_working()
     move_and_click("calculate_model")
+    check_working()
     move_and_click("simplify")
+    check_working()
     move_and_click("mesh")
+    check_working()
 
 
 run()
