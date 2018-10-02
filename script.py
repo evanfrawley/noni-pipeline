@@ -11,8 +11,36 @@ IMG_FILE_NAMES = {
     "simplify_mesh":"",
 }
 
+POINTS = {
+    "reality_capture_taskbar": {
+        "x": 54,
+        "y": 1060,
+    },
+    "photos_buttons": {
+        "x": 68,
+        "y": 68,
+    },
+    "align_images": {
+        "x": 385,
+        "y": 60,
+    },
+    "calculate_model": {
+        "x": 385,
+        "y": 80,
+    },
+    "simplify": {
+        "x": 385,
+        "y": 100,
+    },
+    "mesh": {
+        "x": 590,
+        "y": 104,
+    },
+}
+
 def move(to_x, to_y, duration):
     pyautogui.moveTo(to_x, to_y, duration, pyautogui.easeOutQuad)
+    time.sleep(0.5)
 
 
 def write(word):
@@ -64,10 +92,27 @@ def change_rc_polygons():
     pyautogui.press('enter')
 
 
-def run():
-    open_reality_capture()
-    select_img_folder()
+def click():
+    pyautogui.click()
 
+
+def get_x_y(key):
+    return (POINTS[key].x, POINTS[key].y)
+
+
+def move_and_click(key):
+    x, y = get_x_y(key)
+    move(x, y, 1)
+    # click()
+
+
+def run():
+    move_and_click("reality_capture_taskbar")
+    move_and_click("photos_buttons")
+    move_and_click("align_images")
+    move_and_click("calculate_model")
+    move_and_click("simplify")
+    move_and_click("mesh")
 
 
 run()
