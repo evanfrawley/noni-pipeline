@@ -1,5 +1,12 @@
 import pyautogui
 import time
+import cv2
+import numpy as np
+
+
+
+
+
 
 POLYGON_COUNT = "150000"
 RC_IMG_PATH = "img/rc/"
@@ -125,9 +132,17 @@ def move_and_double_click(key):
 
 
 def check_working():
-    p_x, p_y = pyautogui.locateOnScreen('controls.png')
-    print(p_x, p_y)
-    time.sleep(5)
+    is_working = True
+    template = cv2.imread('img/rc/controls.png',0)
+    w, h = template.shape[::-1]
+    while is_working:
+        time.sleep(10)
+        img = cv2.cvtColor(np.array(pyautogui.screenshot()), cv2.COLOR_BGR2GRAY)
+        method = eval('cv2.TM_CCORR_NORMED')
+        res = cv2.matchTemplate(img,template,method)
+        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+        is_working = max_val > 0.9
+        print("max val:", max_val, flush=True)
 
 
 def paste_text(text):
