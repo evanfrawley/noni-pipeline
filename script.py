@@ -125,8 +125,9 @@ def move_and_double_click(key):
 
 
 def check_working():
-    p_x, p_y = pyautogui.locateCenterOnScreen('controls.png')
+    p_x, p_y = pyautogui.locateOnScreen('controls.png')
     print(p_x, p_y)
+    time.sleep(5)
 
 
 def paste_text(text):
