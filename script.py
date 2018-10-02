@@ -36,6 +36,10 @@ POINTS = {
         "x": 590,
         "y": 104,
     },
+    "photos_file_picker": {
+        "x":930,
+        "y":650,
+    },
 }
 
 def move(to_x, to_y, duration):
@@ -106,14 +110,27 @@ def move_and_click(key):
     click()
 
 
+def move_and_double_click(key):
+    x, y = get_x_y(key)
+    move(x, y, 1)
+    click()
+
+
 def check_working():
     p_x, p_y = pyautogui.locateCenterOnScreen('controls.png')
     print(p_x, p_y)
 
 
+def paste_text(text):
+    pyautogui.typewrite(text, interval=0.21)
+    time.sleep(1)
+
+
 def run():
     move_and_click("reality_capture_taskbar")
     move_and_click("photos_buttons")
+    move_and_double_click("photos_file_picker")
+    paste_text("AlfredoPasta")
     move_and_click("align_images")
     check_working()
     move_and_click("calculate_model")
