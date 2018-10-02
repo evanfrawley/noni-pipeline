@@ -97,7 +97,7 @@ def click():
 
 
 def get_x_y(key):
-    return (POINTS[key].x, POINTS[key].y)
+    return (POINTS[key]["x"], POINTS[key]["y"])
 
 
 def move_and_click(key):
