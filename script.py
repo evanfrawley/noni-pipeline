@@ -2,15 +2,18 @@ import pyautogui
 import time
 import cv2
 import numpy as np
-import sys
+from twilio.rest import Client
 
 POLYGON_COUNT = "150000"
 RC_IMG_PATH = "img/rc/"
+
+CONTROLS_CONF_LEVEL = 0.97
 
 IMG_FILE_NAMES = {
     "folder_icon": "select_folder.png",
     "rc_taskbar": "rc_taskbar.png",
     "folder_path": "folder_select.png",
+    "controls": "controls.png",
     "simplify_mesh":"",
 }
 
@@ -49,59 +52,38 @@ POINTS = {
     },
 }
 
+# Your Account SID from twilio.com/console
+account_sid = "ACf6d6aabda889393fc8de587d55874b7a"
+# Your Auth Token from twilio.com/console
+auth_token  = "47c4fe081246aca68dae928e65cc3c19"
+
+def send_text(msg):
+    client = Client(account_sid, auth_token)
+
+    message = client.messages.create(
+        to="+16262418919",
+        from_="+14156505222",
+        body=msg)
+
+    print(message.sid)
+
+
+def get_img_path(key):
+    return RC_IMG_PATH + IMG_FILE_NAMES[key];
+
 
 def move(to_x, to_y, duration):
     pyautogui.moveTo(to_x, to_y, duration, pyautogui.easeOutQuad)
     time.sleep(0.5)
 
 
-def write(word):
+def write(message):
     pyautogui.typewrite(message, interval=0.25)
 
 
 def reset():
     screenWidth, screenHeight = pyautogui.size()
     pyautogui.moveTo(screenWidth / 2, screenHeight / 2)
-
-
-def open_reality_capture():
-    reset()
-    path = "" + RC_IMG_PATH + IMG_FILE_NAMES['rc_taskbar']
-    print(IMG_FILE_NAMES['rc_taskbar'])
-    print(path)
-    rc_x, rc_y = pyautogui.locateCenterOnScreen(path)
-    pyautogui.click(rc_x, rc_y)
-
-
-def select_img_folder():
-    reset()
-    path = "" + RC_IMG_PATH + IMG_FILE_NAMES['folder_icon']
-    print(IMG_FILE_NAMES['folder_icon'])
-    print(path)
-    x, y = pyautogui.locateCenterOnScreen(path)
-    move(x, y)
-    pyautogui.click()
-    path = "" + RC_IMG_PATH + IMG_FILE_NAMES['folder_path']
-    print(IMG_FILE_NAMES['folder_path'])
-    print(path)
-    x, y = pyautogui.locateCenterOnScreen(path)
-    move(x, y)
-    pyautogui.click(clicks=2)
-    write("this is a test123")
-    pyautogui.enter()
-
-
-def simplify_mesh():
-    reset()
-    rc_x, rc_y = pyautogui.locateCenterOnScreen(RC_IMG_PATH + IMG_FILE_NAMES['folder_path'])
-    pyautogui.click(rc_x, rc_y)
-
-
-def change_rc_polygons():
-    reset()
-    p_x, p_x = pyautogui.locateCenterOnScreen('rc_polygon_box.png')
-    pyautogui.typewrite(POLYGON_COUNT, interval=0.21)
-    pyautogui.press('enter')
 
 
 def click():
@@ -119,7 +101,7 @@ def get_x_y(key):
 def move_and_click(key):
     x, y = get_x_y(key)
     move(x, y, 1)
-    click()
+    # click()
 
 
 def move_and_double_click(key):
@@ -130,7 +112,7 @@ def move_and_double_click(key):
 
 def check_working():
     is_working = True
-    template = cv2.imread('img/rc/controls.png',0)
+    template = cv2.imread(get_img_path("controls"), 0)
     w, h = template.shape[::-1]
     while is_working:
         time.sleep(10)
@@ -138,13 +120,17 @@ def check_working():
         method = eval('cv2.TM_CCORR_NORMED')
         res = cv2.matchTemplate(img,template,method)
         min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-        is_working = max_val > 0.95
-        print("percent match:", max_val, flush=True)
+        is_working = max_val > CONTROLS_CONF_LEVEL
+        print("  percent match:", max_val, flush=True)
+
+
+def select_all():
+    pyautogui.hotkey('ctrl', 'a')
 
 
 def paste_text(text):
-    pyautogui.hotkey('ctrl', 'a')
-    pyautogui.typewrite(text, interval=0.21)
+    select_all()
+    write(text)
 
 
 def get_user_confirmation():
@@ -160,17 +146,23 @@ def get_user_confirmation():
         exit()
 
 
+def to_user_step(step):
+    return int(step) + 1
+
+
+def from_user_step(step):
+    return int(step) - 1
+
+
 def get_starting_step():
     print("*****************************")
     print("Welcome to the ModelScriptHelper!")
-    resume = input("Are you resuming from the middle of a previous session? [y/N]?")
-    if name.lower() == 'y':
-        step = input("What was the last FULL COMPLETED step?")
-        return step
-    elif name.lower() == 'n':
-        print("OK. Waiting for another 30s")
-        time.sleep(30)
-        get_user_confirmation()
+    resume = input("Are you resuming from the middle of a previous session? [y/N]? ")
+    if resume.lower() == 'y':
+        step = input("What was the last FULL COMPLETED step? ")
+        return from_user_step(step)
+    elif resume.lower() == 'n':
+        return 0
     else:
         print("Not sure what you inputted, exiting program.")
         exit()
@@ -233,14 +225,14 @@ steps = [
 
 
 def run():
+    start = get_starting_step()
     print("**************************")
-    for idx, step in enumerate(steps):
-        print("Step", idx+1, "started")
+    for idx in range(start, len(steps)):
+        step = steps[idx]
+        print("Step", to_user_step(idx), "started")
         globals()[step["name"]](*step["step_args"])
-        print("Step", idx+1, "completed")
+        print("Step", to_user_step(idx), "completed")
         print("**************************")
-
-    # get_user_confirmation()
 
 
 run()
