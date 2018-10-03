@@ -2,11 +2,7 @@ import pyautogui
 import time
 import cv2
 import numpy as np
-
-
-
-
-
+import sys
 
 POLYGON_COUNT = "150000"
 RC_IMG_PATH = "img/rc/"
@@ -52,6 +48,7 @@ POINTS = {
         "y": 688,
     },
 }
+
 
 def move(to_x, to_y, duration):
     pyautogui.moveTo(to_x, to_y, duration, pyautogui.easeOutQuad)
@@ -141,28 +138,109 @@ def check_working():
         method = eval('cv2.TM_CCORR_NORMED')
         res = cv2.matchTemplate(img,template,method)
         min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-        is_working = max_val > 0.9
-        print("max val:", max_val, flush=True)
+        is_working = max_val > 0.95
+        print("percent match:", max_val, flush=True)
 
 
 def paste_text(text):
+    pyautogui.hotkey('ctrl', 'a')
     pyautogui.typewrite(text, interval=0.21)
 
 
+def get_user_confirmation():
+    name = input("Ready to continue? [y/N]: ")
+    if name.lower() == 'y':
+        return
+    elif name.lower() == 'n':
+        print("OK. Waiting for another 30s")
+        time.sleep(30)
+        get_user_confirmation()
+    else:
+        print("Not sure what you inputted, exiting program.")
+        exit()
+
+
+def get_starting_step():
+    print("*****************************")
+    print("Welcome to the ModelScriptHelper!")
+    resume = input("Are you resuming from the middle of a previous session? [y/N]?")
+    if name.lower() == 'y':
+        step = input("What was the last FULL COMPLETED step?")
+        return step
+    elif name.lower() == 'n':
+        print("OK. Waiting for another 30s")
+        time.sleep(30)
+        get_user_confirmation()
+    else:
+        print("Not sure what you inputted, exiting program.")
+        exit()
+
+
+steps = [
+    {
+        "name": "move_and_click",
+        "step_args": ["reality_capture_taskbar"]
+    },
+    {
+        "name": "move_and_click",
+        "step_args": ["photos_buttons"]
+    },
+    {
+        "name": "move_and_click",
+        "step_args": ["photos_file_picker"]
+    },
+    {
+        "name": "paste_text",
+        "step_args": ["AlfredoPasta"]
+    },
+    {
+        "name": "move_and_click",
+        "step_args": ["photos_file_picker_ok"]
+    },
+    {
+        "name": "move_and_click",
+        "step_args": ["align_images"]
+    },
+    {
+        "name": "check_working",
+        "step_args": []
+    },
+    {
+        "name": "move_and_click",
+        "step_args": ["calculate_model"]
+    },
+    {
+        "name": "check_working",
+        "step_args": []
+    },
+    {
+        "name": "move_and_click",
+        "step_args": ["simplify"]
+    },
+    {
+        "name": "check_working",
+        "step_args": []
+    },
+    {
+        "name": "move_and_click",
+        "step_args": ["mesh"]
+    },
+    {
+        "name": "check_working",
+        "step_args": []
+    },
+]
+
+
 def run():
-    move_and_click("reality_capture_taskbar")
-    move_and_click("photos_buttons")
-    move_and_double_click("photos_file_picker")
-    paste_text("AlfredoPasta")
-    move_and_click("photos_file_picker_ok")
-    move_and_click("align_images")
-    check_working()
-    move_and_click("calculate_model")
-    check_working()
-    move_and_click("simplify")
-    check_working()
-    move_and_click("mesh")
-    check_working()
+    print("**************************")
+    for idx, step in enumerate(steps):
+        print("Step", idx+1, "started")
+        globals()[step["name"]](*step["step_args"])
+        print("Step", idx+1, "completed")
+        print("**************************")
+
+    # get_user_confirmation()
 
 
 run()
